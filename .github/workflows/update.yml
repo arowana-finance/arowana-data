@@ -30,7 +30,7 @@ jobs:
 
       # Update ARW Price
       - name: Update ARW Price
-        run:
+        run: |
           mkdir -p arw_price
           cd arw_price
           npx --package=@arowanadao/oracle arw-oracle
