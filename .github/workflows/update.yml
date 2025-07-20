@@ -1,0 +1,42 @@
+name: Node.js Cron
+
+on:
+  schedule:
+    # Every hour
+    - cron: "0 * * * *"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
+jobs:
+  updater:
+    name: Update All
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.check_changes.outputs.changed }}
+    steps:
+      # Checkout
+      - uses: actions/checkout@v4
+
+      # Setup Node
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      # Update ARW Price
+      - name: Update ARW Price
+        run: |
+          mkdir -p arw_price
+          cd arw_price
+          npx --package=@arowanadao/oracle arw-oracle
+
+      # Auto-commit any changes produced by build
+      - name: Auto-Commit
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: Update All [skip ci]"
