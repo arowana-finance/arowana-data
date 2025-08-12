@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir -p arw_price
           cd arw_price
-          npx --package=@arowanadao/oracle arw-oracle
+          npx --package=arowana-feeds arowana-feeds
 
       # Auto-commit any changes produced by build
       - name: Auto-Commit
